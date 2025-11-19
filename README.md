@@ -1,5 +1,3 @@
-Implementasi Sistem Point of Sale (POS) dan Manajemen Stok berbasis Web untuk digitalisasi Warung Z&amp;Z. Proyek Tugas Besar PIPL Kelompok 1
-
 # Sistem Point of Sale (POS) dan Manajemen Stok - Warung Z&Z
 
 Repositori ini berisi kode sumber untuk Tugas Besar mata kuliah PIPL (T.A Ganjil 2025/2026). [cite_start]Proyek ini bertujuan untuk melakukan digitalisasi pada "Warung Z&Z" melalui sistem berbasis web.
