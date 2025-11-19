@@ -38,3 +38,9 @@ $routes->get('/logout', 'Auth::logout');
 
 // Halaman Utama jika dibuka, arahkan ke login
 $routes->get('/', 'Auth::index');
+
+// Route History (Boleh diakses Admin & Kasir)
+$routes->group('history', function($routes) {
+    $routes->get('/', 'History::index');      // Daftar Transaksi
+    $routes->get('(:num)', 'History::show/$1'); // Detail Invoice
+});

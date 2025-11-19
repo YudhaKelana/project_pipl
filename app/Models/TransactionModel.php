@@ -12,7 +12,7 @@ class TransactionModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['invoice_no', 'total amount', 'created_at'];
+    protected $allowedFields    = ['invoice_no', 'total_amount', 'created_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

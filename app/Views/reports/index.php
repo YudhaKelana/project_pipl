@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header bg-info text-white">
-        <h4 class="mb-0">Laporan Barang Fast-Moving vs Slow-Moving</h4>
+        <h4 class="mb-0">Laporan Barang Fast-Moving/Slow-Moving</h4>
     </div>
     <div class="card-body">
         <div class="alert alert-light border">

@@ -17,6 +17,7 @@
           <ul class="navbar-nav me-auto">
             <li class="nav-item"><a class="nav-link" href="/products">Produk</a></li>
             <li class="nav-item"><a class="nav-link" href="/pos">Kasir</a></li>
+            <li class="nav-item"><a class="nav-link" href="/history">Riwayat Transaksi</a></li>
             
             <?php if(session()->get('role') == 'admin'): ?>
                 <li class="nav-item"><a class="nav-link" href="/reports">Laporan</a></li>
