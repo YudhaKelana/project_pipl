@@ -36,10 +36,13 @@
                                 <?= $p['stock'] ?>
                             </td>
                             <td>
+                                <a href="<?= base_url('produk/edit/'.$p['id']) ?>" class="btn btn-sm btn-warning me-1">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
                                 <a href="<?= base_url('produk/delete/'.$p['id']) ?>" 
-                                   onclick="return confirm('Yakin hapus <?= $p['name'] ?>?')" 
-                                   class="btn btn-sm btn-danger">
-                                   <i class="bi bi-trash"></i> Hapus
+                                onclick="return confirm('Yakin hapus <?= $p['name'] ?>?')" 
+                                class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i> Hapus
                                 </a>
                             </td>
                         </tr>

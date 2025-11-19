@@ -16,12 +16,6 @@ class Kasir extends BaseController
         // Ambil keranjang dari session (jika ada)
         $data['cart'] = session()->get('cart') ?? [];
         
-        // Hitung Total Belanja
-        $data['grand_total'] = 0;
-        foreach ($data['cart'] as $item) {
-            $data['grand_total'] += $item['price'] * $item['qty'];
-        }
-
         return view('kasir_view', $data);
     }
 
@@ -48,63 +42,79 @@ class Kasir extends BaseController
             }
             session()->set('cart', $cart);
         }
-        return redirect()->to('/kasir');
+        return redirect()->to(base_url('kasir'));
     }
 
     // 2. Reset Keranjang
     public function clear()
     {
         session()->remove('cart');
-        return redirect()->to('/kasir');
+        return redirect()->to(base_url('kasir'));
     }
 
-    // 3. Proses Pembayaran (Checkout)
+    // 3. Proses Pembayaran (Checkout) - VERSI PERBAIKAN
     public function checkout()
     {
         $cart = session()->get('cart');
-        if (empty($cart)) return redirect()->to('/kasir');
+        
+        // Cek keranjang kosong
+        if (empty($cart)) {
+            return redirect()->to(base_url('kasir'))->with('error', 'Keranjang masih kosong!');
+        }
 
         $db = \Config\Database::connect();
         $transModel = new TransactionModel();
         $detailModel = new TransactionDetailModel();
         $productModel = new ProductModel();
 
-        // Gunakan Database Transaction agar aman (Semua sukses atau batal semua)
+        // --- MULAI TRANSAKSI DATABASE ---
         $db->transStart();
 
-        // A. Simpan Header Transaksi
+        // A. Hitung Total
         $grandTotal = 0;
-        foreach ($cart as $item) $grandTotal += $item['price'] * $item['qty'];
-
-        $transId = $transModel->insert([
-            'invoice_no' => 'INV-' . date('YmdHis'),
-            'total_amount' => $grandTotal
-        ]);
-
-        // B. Simpan Detail & Kurangi Stok
         foreach ($cart as $item) {
-            $detailModel->insert([
-                'transaction_id' => $transId,
-                'product_id' => $item['id'],
-                'qty' => $item['qty'],
-                'price' => $item['price']
-            ]);
-
-            // Kurangi stok di tabel produk
-            $currentProduct = $productModel->find($item['id']);
-            $newStock = $currentProduct['stock'] - $item['qty'];
-            $productModel->update($item['id'], ['stock' => $newStock]);
+            $grandTotal += $item['price'] * $item['qty'];
         }
 
+        // B. Simpan Header Transaksi
+        // Kita matikan timestamp otomatis di Model, jadi kita isi created_at manual disini
+        $transData = [
+            'invoice_no'   => 'INV-' . date('YmdHis'),
+            'total_amount' => $grandTotal,
+            'created_at'   => date('Y-m-d H:i:s')
+        ];
+        
+        $transId = $transModel->insert($transData);
+
+        // C. Simpan Detail & Potong Stok
+        foreach ($cart as $item) {
+            // Simpan detail item
+            $detailModel->insert([
+                'transaction_id' => $transId,
+                'product_id'     => $item['id'],
+                'qty'            => $item['qty'],
+                'price'          => $item['price']
+            ]);
+
+            // Potong Stok di Master Barang
+            $currentProduct = $productModel->find($item['id']);
+            if ($currentProduct) {
+                $newStock = $currentProduct['stock'] - $item['qty'];
+                $productModel->update($item['id'], ['stock' => $newStock]);
+            }
+        }
+
+        // --- SELESAI TRANSAKSI ---
         $db->transComplete();
 
+        // Cek apakah Transaksi Sukses atau Gagal
         if ($db->transStatus() === FALSE) {
-            // Jika gagal
-            return redirect()->to('/kasir')->with('error', 'Transaksi Gagal');
+            // JIKA GAGAL
+            return redirect()->to(base_url('kasir'))->with('error', 'Transaksi Gagal Disimpan (Database Error)');
         } else {
-            // Jika sukses, kosongkan keranjang
-            session()->remove('cart');
-            return redirect()->to('/kasir')->with('success', 'Transaksi Berhasil! Kembalian: ...');
+            // JIKA SUKSES
+            session()->remove('cart'); // Kosongkan keranjang
+            return redirect()->to(base_url('kasir'))->with('success', 'Pembayaran Berhasil! Stok telah dikurangi.');
         }
     }
 }

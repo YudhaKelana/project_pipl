@@ -6,5 +6,5 @@ class TransactionModel extends Model
     protected $table = 'transactions';
     protected $primaryKey = 'id';
     protected $allowedFields = ['invoice_no', 'total_amount'];
-    protected $useTimestamps = true; // Otomatis isi created_at
+    protected $useTimestamps = false; 
 }
