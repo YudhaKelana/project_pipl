@@ -9,7 +9,7 @@ Warung Z&Z merupakan UMKM yang berlokasi strategis namun masih menghadapi kendal
 * **Inefisiensi Arus Kas:** Tidak adanya pencatatan sistematis menyebabkan inefisiensi keuangan.
 
 ## 🚀 Solusi & Fitur Utama
-[cite_start]Sistem ini dirancang untuk mengubah manajemen warung dari berbasis intuisi menjadi berbasis data. Fitur unggulan meliputi:
+Sistem ini dirancang untuk mengubah manajemen warung dari berbasis intuisi menjadi berbasis data. Fitur unggulan meliputi:
 1.  **Point of Sale (POS):** Pencatatan transaksi penjualan secara *real-time*
 2.  **Manajemen Stok Otomatis:** Stok berkurang otomatis saat transaksi terjadi
 3.  **Laporan Analisis Produk:** Laporan yang membedakan barang *fast-moving* dan *slow-moving* sebagai dasar evaluasi stok.
@@ -23,5 +23,5 @@ Mahasiswa Teknik Informatika - Universitas Maritim Raja Ali Haji
 * **Yudha Rifal Kelana** (2301020122)
 
 ## 🛠️ Teknologi yang Digunakan
-* *(Isi dengan Tech Stack kalian, misal: PHP/Laravel, MySQL, Bootstrap, dll)*
-* *(Sebutkan juga jika menggunakan Docker sesuai tren saat ini)*
+* *Framework CI4, MySQL*
+* 
