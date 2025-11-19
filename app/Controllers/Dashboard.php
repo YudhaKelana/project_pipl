@@ -9,17 +9,25 @@ class Dashboard extends BaseController
         $prodModel = new ProductModel();
         $transModel = new TransactionModel();
         $db = \Config\Database::connect();
+        
+        // Ambil Tanggal Hari Ini (Format: 2023-11-20)
+        $today = date('Y-m-d');
 
         // Hitung data ringkas untuk dashboard
         $data = [
             'total_produk' => $prodModel->countAll(),
-            'stok_tipis'   => $prodModel->where('stock <', 10)->countAllResults(), // Warning stok
+            
+            'stok_tipis'   => $prodModel->where('stock <', 10)->countAllResults(),
+            
+            // FIX: Gunakan LIKE agar mencocokkan semua jam di tanggal hari ini
             'penjualan_hari_ini' => $db->table('transactions')
-                                       ->where('DATE(created_at)', date('Y-m-d'))
+                                       ->like('created_at', $today, 'after') 
                                        ->countAllResults(),
+                                       
+            // FIX: Gunakan LIKE juga untuk Omset
             'omset_hari_ini' => $db->table('transactions')
                                    ->selectSum('total_amount')
-                                   ->where('DATE(created_at)', date('Y-m-d'))
+                                   ->like('created_at', $today, 'after')
                                    ->get()->getRow()->total_amount ?? 0
         ];
 
