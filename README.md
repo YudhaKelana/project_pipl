@@ -14,7 +14,7 @@ Repositori ini berisi kode sumber untuk Tugas Besar mata kuliah PIPL (T.A Ganjil
 2.  **Manajemen Stok Otomatis:** Stok berkurang otomatis saat transaksi terjadi
 3.  **Laporan Analisis Produk:** Laporan yang membedakan barang *fast-moving* dan *slow-moving* sebagai dasar evaluasi stok.
 
-## 👥 Anggota Kelompok 8
+## 👥 Anggota Kelompok 1
 Mahasiswa Teknik Informatika - Universitas Maritim Raja Ali Haji
 * **Rizqi Amanullah** (2301020002)
 * **Hilman Yazid Ilhamsyah** (2301020056)
