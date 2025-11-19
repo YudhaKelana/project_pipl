@@ -52,7 +52,9 @@
                             </span>
                         </td>
                         <td>
-                            <div class="d-flex gap-2"> <a href="/products/edit/<?= $p['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                <?php if (session()->get('role') == 'admin') : ?>
+                                    <a href="/products/edit/<?= $p['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                <?php endif; ?>
                                 
                                 <?php if(session()->get('role') == 'admin'): ?>
                                     <a href="/products/delete/<?= $p['id']; ?>" class="btn btn-danger btn-sm" 

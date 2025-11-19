@@ -13,7 +13,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4>Login System</h4>
+                    <h4>Login</h4>
                 </div>
                 <div class="card-body">
                     <?php if(session()->getFlashdata('error')): ?>

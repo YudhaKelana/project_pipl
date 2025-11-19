@@ -51,7 +51,9 @@ class Products extends BaseController
     public function edit($id)
     {
         $product = $this->productModel->find($id);
-
+        if (!session()->get('role') == 'admin') {
+            return redirect()->to('/products')->with('error', 'Akses Ditolak! Hanya Admin yang boleh mengedit barang.');
+        }
         if (!$product) {
             return redirect()->to('/products')->with('error', 'Data produk tidak ditemukan.');
         }
@@ -67,6 +69,10 @@ class Products extends BaseController
     // 5. Proses Update Data ke Database
     public function update($id)
     {
+        // --- PROTEKSI TAMBAHAN ---
+        if (session()->get('role') != 'admin') {
+            return redirect()->to('/products')->with('error', 'Akses Ditolak!');
+        }
         // Validasi input
         if (!$this->validate([
             'name'  => 'required',
