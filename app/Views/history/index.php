@@ -35,6 +35,12 @@
                             <i class="fas fa-history me-1"></i> Riwayat Penjualan
                         </a>
                     </li>
+                    <!-- MENU BARU: MANAJEMEN KAS -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('cash') ?>">
+                            <i class="fas fa-money-bill-wave me-1"></i> Manajemen Kas
+                        </a>
+                    </li>
                     <!-- MENU BARU: LAPORAN -->
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('report') ?>">

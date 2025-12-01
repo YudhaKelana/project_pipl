@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\StockAlertModel;
 
 class Auth extends BaseController
 {
@@ -28,11 +29,17 @@ class Auth extends BaseController
         if ($dataUser) {
             // Cek Password
             if (password_verify($password, $dataUser['password'])) {
+                // Cek stok produk yang menipis
+                $stockAlertModel = new StockAlertModel();
+                $lowStockAlerts = $stockAlertModel->checkLowStockProducts();
+
                 // Set Session
                 session()->set([
                     'username' => $dataUser['username'],
-                    'isLoggedIn' => true
+                    'isLoggedIn' => true,
+                    'lowStockAlerts' => $lowStockAlerts
                 ]);
+
                 return redirect()->to('/product');
             }
         }

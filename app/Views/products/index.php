@@ -42,6 +42,11 @@
                     </li>
                     <!-- MENU BARU: LAPORAN -->
                     <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('cash') ?>">
+                            <i class="fas fa-money-bill-wave me-1"></i> Manajemen Kas
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('report') ?>">
                             <i class="fas fa-chart-line me-1"></i> Laporan Analisis
                         </a>
@@ -148,5 +153,8 @@
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- INCLUDE STOCK REMINDER MODAL -->
+    <?= view('components/stock_reminder') ?>
 </body>
 </html>

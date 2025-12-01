@@ -31,6 +31,9 @@
                         <a class="nav-link" href="<?= base_url('history') ?>">Riwayat Penjualan</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('cash') ?>">Manajemen Kas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active fw-bold" href="<?= base_url('report') ?>">Laporan Analisis</a>
                     </li>
                 </ul>
@@ -58,7 +61,20 @@
         <!-- BAGIAN 1: GRAFIK PENJUALAN (OMZET) -->
         <div class="card mb-4">
             <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-chart-bar me-2"></i>Tren Omzet 2 Minggu Terakhir</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-chart-bar me-2"></i>Tren Omzet - <?= $periodName ?></h5>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a href="<?= base_url('report?period=monthly') ?>" class="btn btn-outline-primary <?= $period === 'monthly' ? 'active' : '' ?>">
+                            <i class="fas fa-calendar-alt me-1"></i>Bulanan
+                        </a>
+                        <a href="<?= base_url('report?period=quarterly') ?>" class="btn btn-outline-primary <?= $period === 'quarterly' ? 'active' : '' ?>">
+                            <i class="fas fa-chart-pie me-1"></i>Kuartal
+                        </a>
+                        <a href="<?= base_url('report?period=semi-annual') ?>" class="btn btn-outline-primary <?= $period === 'semi-annual' ? 'active' : '' ?>">
+                            <i class="fas fa-chart-line me-1"></i>6 Bulan
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Canvas untuk Chart.js -->

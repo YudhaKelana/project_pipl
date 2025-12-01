@@ -71,12 +71,24 @@
                             </div>
 
                             <!-- STOK -->
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label class="form-label fw-bold text-secondary small">STOK SAAT INI</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0"><i class="fas fa-cubes text-muted"></i></span>
                                     <input type="number" name="stok" class="form-control border-start-0 ps-0" value="<?= old('stok', $product['stok']) ?>" required>
                                 </div>
+                            </div>
+
+                            <!-- BATAS STOK MENIPIS (THRESHOLD) -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-secondary small">BATAS STOK MENIPIS (REMINDER)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fas fa-warning text-warning"></i></span>
+                                    <input type="number" name="low_stock_threshold" class="form-control border-start-0 ps-0" value="<?= old('low_stock_threshold', $product['low_stock_threshold'] ?? 5) ?>" min="1" required>
+                                </div>
+                                <small class="form-text text-muted d-block mt-1">
+                                    <i class="fas fa-info-circle me-1"></i>Reminder akan muncul ketika stok mencapai nilai ini atau lebih rendah
+                                </small>
                             </div>
                             
                             <!-- TOMBOL -->

@@ -50,6 +50,13 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
         $routes->get('detail/(:num)', 'History::detail/$1'); // Halaman Detail Transaksi
     });
 
-     // C. Laporan Analisis (BARU)
+    // C. Manajemen Kas (BARU)
+    $routes->group('cash', function($routes) {
+        $routes->get('/', 'Cash::index');                    // Dashboard Kas
+        $routes->post('update', 'Cash::updateCashFlow');     // Update Cash Flow (AJAX)
+        $routes->get('detail/(:any)', 'Cash::getDetail/$1'); // Get Detail Cash Flow (AJAX)
+    });
+
+     // D. Laporan Analisis (BARU)
     $routes->get('report', 'Report::index');
 });

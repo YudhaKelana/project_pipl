@@ -12,7 +12,7 @@ class ProductModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama_barang', 'harga_beli', 'harga_jual', 'stok'];
+    protected $allowedFields    = ['nama_barang', 'harga_beli', 'harga_jual', 'stok', 'low_stock_threshold'];
 
     // Dates
     protected $useTimestamps = true;
@@ -30,7 +30,8 @@ class ProductModel extends Model
         
         'harga_beli'  => 'required|numeric',
         'harga_jual'  => 'required|numeric',
-        'stok'        => 'required|integer'
+        'stok'        => 'required|integer',
+        'low_stock_threshold' => 'required|integer|greater_than[0]'
     ];
 
     protected $validationMessages = [
@@ -41,6 +42,11 @@ class ProductModel extends Model
         ],
         'stok' => [
             'integer'    => 'Stok harus berupa angka bulat.'
+        ],
+        'low_stock_threshold' => [
+            'required' => 'Batas stok menipis wajib diisi.',
+            'integer' => 'Batas stok harus berupa angka bulat.',
+            'greater_than' => 'Batas stok minimal harus 1.'
         ]
     ];
     
