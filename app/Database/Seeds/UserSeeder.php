@@ -19,13 +19,24 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kasir',
                 'password' => password_hash('kasir123', PASSWORD_DEFAULT), // Password: kasir123
-                'name'     => 'Pegawai Teladan',
+                'name'     => 'Kasir Teladan',
                 'role'     => 'kasir',
                 'created_at' => date('Y-m-d H:i:s')
             ]
         ];
 
-        // Masukkan data ke tabel users
-        $this->db->table('users')->insertBatch($data);
+        // ✅ Cek apakah user sudah ada, jika belum baru insert
+        foreach ($data as $user) {
+            $exists = $this->db->table('users')
+                ->where('username', $user['username'])
+                ->countAllResults();
+            
+            if ($exists == 0) {
+                $this->db->table('users')->insert($user);
+                echo "✅ User '{$user['username']}' berhasil dibuat\n";
+            } else {
+                echo "⚠️  User '{$user['username']}' sudah ada, skip...\n";
+            }
+        }
     }
 }

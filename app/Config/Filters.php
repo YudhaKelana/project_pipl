@@ -29,13 +29,15 @@ class Filters extends BaseFilters
         'csrf'          => \CodeIgniter\Filters\CSRF::class,
         'toolbar'       => \CodeIgniter\Filters\DebugToolbar::class,
         'honeypot'      => \CodeIgniter\Filters\Honeypot::class,
-        'authguard'    => \App\Filters\AuthFilter::class,
+        'auth'          => \App\Filters\AuthFilter::class,  // ✅ Alias 'auth' untuk AuthFilter
+        'authguard'     => \App\Filters\AuthFilter::class,  // Backward compatibility
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'cors'          => Cors::class,
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'throttle'      => \CodeIgniter\Filters\Throttle::class, // ✅ Rate limiting
     ];
 
     /**
@@ -75,7 +77,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            // 'csrf',
+            'csrf', // ✅ AKTIFKAN CSRF PROTECTION
             // 'invalidchars',
         ],
         'after' => [
@@ -97,7 +99,9 @@ class Filters extends BaseFilters
      *
      * @var array<string, list<string>>
      */
-    public array $methods = [];
+    public array $methods = [
+        'POST' => ['throttle'], // ✅ Rate limiting untuk POST requests
+    ];
 
     /**
      * List of filter aliases that should run on any
@@ -109,8 +113,7 @@ class Filters extends BaseFilters
      * @var array<string, array<string, list<string>>>
      */
     public array $filters = [
-        'products*' => ['before' => ['authGuard']],
-        'pos*'      => ['before' => ['authGuard']],
-        'reports*'  => ['before' => ['authGuard']],
+        // ✅ Filter auth sudah diterapkan via route group di Routes.php
+        // Tidak perlu didefinisikan di sini lagi
     ];
 }
