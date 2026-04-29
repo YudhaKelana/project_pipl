@@ -15,6 +15,11 @@ class Reports extends BaseController
 
     public function index()
     {
+        // ✅ MENGGUNAKAN HELPER
+        if ($redirect = require_admin('Akses Ditolak! Hanya Admin yang boleh melihat laporan.')) {
+            return $redirect;
+        }
+        
         // Logika Query:
         // 1. Gabungkan tabel detail transaksi dengan tabel produk
         // 2. Hitung total quantity terjual (SUM)

@@ -17,6 +17,14 @@ class Auth extends BaseController
 
     public function loginProcess()
     {
+        // ✅ VALIDASI INPUT
+        if (!$this->validate([
+            'username' => 'required|min_length[3]|max_length[50]|alpha_numeric',
+            'password' => 'required|min_length[6]|max_length[255]'
+        ])) {
+            return redirect()->back()->with('error', 'Username dan Password wajib diisi dengan benar!');
+        }
+        
         $userModel = new UserModel();
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
@@ -27,6 +35,9 @@ class Auth extends BaseController
         if ($user) {
             // 2. Cek Password
             if (password_verify($password, $user['password'])) {
+                // ✅ REGENERATE SESSION untuk mencegah session fixation
+                session()->regenerate();
+                
                 // Login Sukses -> Simpan data ke Session
                 $sessData = [
                     'id'         => $user['id'],
