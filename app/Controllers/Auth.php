@@ -20,6 +20,27 @@ class Auth extends BaseController
     // 2. Proses Login
     public function process()
     {
+        // ✅ VALIDASI INPUT
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'username' => 'required|min_length[3]|max_length[50]|alpha_numeric',
+            'password' => 'required|min_length[6]|max_length[255]'
+        ], [
+            'username' => [
+                'required' => 'Username wajib diisi',
+                'min_length' => 'Username minimal 3 karakter',
+                'alpha_numeric' => 'Username hanya boleh huruf dan angka'
+            ],
+            'password' => [
+                'required' => 'Password wajib diisi',
+                'min_length' => 'Password minimal 6 karakter'
+            ]
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->with('error', implode(', ', $validation->getErrors()));
+        }
+
         $model = new UserModel();
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');
@@ -29,6 +50,9 @@ class Auth extends BaseController
         if ($dataUser) {
             // Cek Password
             if (password_verify($password, $dataUser['password'])) {
+                // ✅ REGENERATE SESSION ID untuk mencegah session fixation
+                session()->regenerate();
+                
                 // Cek stok produk yang menipis
                 $stockAlertModel = new StockAlertModel();
                 $lowStockAlerts = $stockAlertModel->checkLowStockProducts();

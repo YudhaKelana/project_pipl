@@ -95,7 +95,7 @@ class Pos extends BaseController
         return redirect()->to('/pos');
     }
 
-    // 4. Bayar (Checkout) -- DIPERBARUI UNTUK STRUK
+    // 4. Bayar (Checkout) -- ✅ REFACTORED: Thin Controller
     public function pay()
     {
         $cart = session()->get('cart');
@@ -104,46 +104,22 @@ class Pos extends BaseController
             return redirect()->to('/pos')->with('error', 'Keranjang masih kosong!');
         }
 
-        // Hitung Total
-        $totalBayar = 0;
-        foreach ($cart as $item) $totalBayar += $item['price'] * $item['qty'];
+        try {
+            // ✅ BUSINESS LOGIC dipindah ke Model
+            $transModel = new TransactionModel();
+            $transID = $transModel->processCheckout($cart);
 
-        // Simpan Transaksi Header
-        $transModel = new TransactionModel();
-        $noFaktur = $transModel->generateNoFaktur(); 
+            // Bersihkan Keranjang
+            session()->remove('cart');
+            
+            // Redirect dengan membawa ID Transaksi untuk dicetak
+            return redirect()->to('/pos')
+                ->with('success', "Transaksi Berhasil!")
+                ->with('last_trans_id', $transID);
 
-        $transModel->insert([
-            'no_faktur' => $noFaktur,
-            'total_bayar' => $totalBayar,
-            'tanggal' => date('Y-m-d H:i:s')
-        ]);
-        
-        // Ambil ID Transaksi yang baru dibuat
-        $transID = $transModel->getInsertID(); 
-
-        // Simpan Detail & Update Stok
-        $detailModel = new TransactionDetailModel();
-        $productModel = new ProductModel();
-
-        foreach ($cart as $item) {
-            $detailModel->insert([
-                'transaction_id' => $transID,
-                'product_id' => $item['id'],
-                'qty' => $item['qty'],
-                'harga_saat_itu' => $item['price']
-            ]);
-
-            $currentProduct = $productModel->find($item['id']);
-            $newStock = $currentProduct['stok'] - $item['qty'];
-            $productModel->update($item['id'], ['stok' => $newStock]);
+        } catch (\Exception $e) {
+            return redirect()->to('/pos')->with('error', $e->getMessage());
         }
-
-        // Bersihkan Keranjang
-        session()->remove('cart');
-        
-        // Redirect dengan membawa ID Transaksi untuk dicetak
-        return redirect()->to('/pos')->with('success', "Transaksi Berhasil!")
-                                     ->with('last_trans_id', $transID);
     }
 
     // 5. Fitur Cetak Struk (BARU)

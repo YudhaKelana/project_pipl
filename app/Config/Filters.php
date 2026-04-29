@@ -36,7 +36,10 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         
         // --- TAMBAHKAN INI AGAR LOGIN JALAN ---
-        'auth'          => \App\Filters\AuthFilter::class, 
+        'auth'          => \App\Filters\AuthFilter::class,
+        
+        // ✅ RATE LIMITING untuk mencegah brute force
+        'throttle'      => \CodeIgniter\Filters\Throttle::class,
     ];
 
     /**
@@ -76,7 +79,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            // 'csrf',
+            'csrf', // ✅ AKTIFKAN CSRF PROTECTION
             // 'invalidchars',
         ],
         'after' => [
@@ -98,7 +101,10 @@ class Filters extends BaseFilters
      *
      * @var array<string, list<string>>
      */
-    public array $methods = [];
+    public array $methods = [
+        // ✅ RATE LIMITING: Batasi POST request untuk mencegah brute force
+        'POST' => ['throttle'],
+    ];
 
     /**
      * List of filter aliases that should run on any

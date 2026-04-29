@@ -51,14 +51,13 @@ class CashFlowModel extends Model
     {
         $db = \Config\Database::connect();
         
-        $query = $db->query("
-            SELECT SUM(td.harga_saat_itu * td.qty) as total_bayar
-            FROM transactions t
-            JOIN transaction_details td ON t.id = td.transaction_id
-            WHERE DATE_FORMAT(t.tanggal, '%Y-%m') = ?
-        ", [$bulan]);
+        // ✅ GUNAKAN QUERY BUILDER untuk keamanan
+        $builder = $db->table('transactions t');
+        $builder->select('SUM(td.harga_saat_itu * td.qty) as total_bayar');
+        $builder->join('transaction_details td', 't.id = td.transaction_id');
+        $builder->where('DATE_FORMAT(t.tanggal, "%Y-%m")', $bulan);
         
-        $result = $query->getRow();
+        $result = $builder->get()->getRow();
         $totalBayar = $result->total_bayar ?? 0;
         
         // Modal = 20% dari total bayar
@@ -73,13 +72,12 @@ class CashFlowModel extends Model
     {
         $db = \Config\Database::connect();
         
-        $query = $db->query("
-            SELECT SUM(t.total_bayar) as total_penjualan
-            FROM transactions t
-            WHERE DATE_FORMAT(t.tanggal, '%Y-%m') = ?
-        ", [$bulan]);
+        // ✅ GUNAKAN QUERY BUILDER untuk keamanan
+        $builder = $db->table('transactions t');
+        $builder->select('SUM(t.total_bayar) as total_penjualan');
+        $builder->where('DATE_FORMAT(t.tanggal, "%Y-%m")', $bulan);
         
-        $result = $query->getRow();
+        $result = $builder->get()->getRow();
         $totalPenjualan = $result->total_penjualan ?? 0;
         
         $modal = $this->calculateMonthlyModal($bulan);

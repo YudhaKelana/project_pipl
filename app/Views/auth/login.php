@@ -10,7 +10,7 @@
         <h3 class="text-center mb-4">Login Admin</h3>
         
         <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+            <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
         <?php endif; ?>
 
         <form action="<?= base_url('auth/process') ?>" method="post">
