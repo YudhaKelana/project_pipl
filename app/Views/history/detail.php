@@ -18,11 +18,11 @@
             <div class="row mb-3">
                 <div class="col-6">
                     <small class="text-muted">No Invoice:</small><br>
-                    <strong><?= esc($trx['invoice_no']); ?></strong>
+                    <strong><?= $trx['invoice_no']; ?></strong>
                 </div>
                 <div class="col-6 text-end">
                     <small class="text-muted">Tanggal:</small><br>
-                    <span><?= esc(date('d M Y, H:i', strtotime($trx['created_at']))); ?></span>
+                    <span><?= date('d M Y, H:i', strtotime($trx['created_at'])); ?></span>
                 </div>
             </div>
 

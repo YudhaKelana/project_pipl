@@ -25,10 +25,10 @@
                     <tr>
                         <td><?= $i++; ?></td>
                         <td><span class="badge bg-dark"><?= esc($t['invoice_no']); ?></span></td>
-                        <td><?= esc(date('d M Y, H:i', strtotime($t['created_at']))); ?> WIB</td>
+                        <td><?= date('d M Y, H:i', strtotime($t['created_at'])); ?> WIB</td>
                         <td class="fw-bold">Rp <?= number_format($t['total_amount'], 0, ',', '.'); ?></td>
                         <td>
-                            <a href="/history/<?= esc($t['id']); ?>" class="btn btn-primary btn-sm">
+                            <a href="/history/<?= $t['id']; ?>" class="btn btn-primary btn-sm">
                                 Lihat Invoice
                             </a>
                         </td>

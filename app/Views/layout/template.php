@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= esc($title); ?> | ProjectPIPL</title>
+    <title><?= $title; ?> | ProjectPIPL</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
@@ -25,7 +25,7 @@
           </ul>
           
           <span class="navbar-text text-white me-3">
-            Halo, <?= esc(session()->get('name')); ?> (<?= esc(ucfirst(session()->get('role'))); ?>)
+            Halo, <?= session()->get('name'); ?> (<?= ucfirst(session()->get('role')); ?>)
           </span>
           <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
         </div>
