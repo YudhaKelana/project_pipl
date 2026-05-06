@@ -7,19 +7,19 @@
     <div class="col-md-7">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">🛒 Katalog Barang</h5>
+                <h5 class="mb-0">Katalog Barang</h5>
             </div>
             <div class="card-body">
                 <!-- FLASH MESSAGES -->
                 <?php if (session()->getFlashdata('success')) : ?>
                     <div class="alert alert-success alert-dismissible fade show">
-                        ✅ <?= session()->getFlashdata('success'); ?>
+                        <?= session()->getFlashdata('success'); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?>
                 <?php if (session()->getFlashdata('error')) : ?>
                     <div class="alert alert-danger alert-dismissible fade show">
-                        ❌ <?= session()->getFlashdata('error'); ?>
+                        <?= session()->getFlashdata('error'); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?>
@@ -31,7 +31,7 @@
                     <div class="row g-2">
                         <div class="col-md-5">
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-search"></i>🔍</span>
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
                                 <input type="text" name="q" class="form-control" placeholder="Cari barang..." value="<?= esc($search); ?>">
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                         <small class="text-secondary">Stok: <strong><?= $p['stock']; ?></strong></small>
                                     </div>
                                     <a href="/pos/add/<?= $p['id']; ?>" class="btn btn-outline-primary btn-sm mt-2 w-100">
-                                        ➕ Tambah ke Keranjang
+                                        Tambah ke Keranjang
                                     </a>
                                 </div>
                             </div>
@@ -110,10 +110,10 @@
     <div class="col-md-5">
         <div class="card shadow-sm sticky-top" style="top: 20px;">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">🛍️ Keranjang Belanja</h5>
+                <h5 class="mb-0">Keranjang Belanja</h5>
                 <?php if (!empty($cart)) : ?>
                     <a href="/pos/clear" class="btn btn-danger btn-sm" onclick="return confirm('Kosongkan keranjang?')">
-                        🗑️ Reset
+                        Reset
                     </a>
                 <?php endif; ?>
             </div>
@@ -168,13 +168,13 @@
                     <?= csrf_field(); ?>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-success btn-lg fw-bold">
-                            💳 PROSES TRANSAKSI
+                            PROSES TRANSAKSI
                         </button>
                     </div>
                 </form>
                 <?php else : ?>
                     <button class="btn btn-secondary btn-lg w-100" disabled>
-                        💳 PROSES TRANSAKSI
+                        PROSES TRANSAKSI
                     </button>
                 <?php endif; ?>
             </div>

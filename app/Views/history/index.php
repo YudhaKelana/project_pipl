@@ -31,7 +31,7 @@
 <!-- FILTER & SEARCH -->
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
-        <h5 class="fw-bold mb-3">📜 Riwayat Transaksi Penjualan</h5>
+        <h5 class="fw-bold mb-3">Riwayat Transaksi Penjualan</h5>
         <form action="/history" method="get">
             <input type="hidden" name="sort" value="<?= esc($sort); ?>">
             <input type="hidden" name="order" value="<?= esc($order); ?>">
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <div class="btn-group w-100">
-                        <button type="submit" class="btn btn-primary">🔍 Cari</button>
+                        <button type="submit" class="btn btn-primary">Cari</button>
                         <?php if (!empty($search) || !empty($dateFrom) || !empty($dateTo)) : ?>
                             <a href="/history" class="btn btn-outline-secondary">Reset</a>
                         <?php endif; ?>
@@ -142,7 +142,7 @@ function sortIcon($column, $currentSort, $currentOrder) {
                             <td class="fw-bold text-success">Rp <?= number_format($t['total_amount'], 0, ',', '.'); ?></td>
                             <td class="text-center pe-3">
                                 <a href="/history/<?= $t['id']; ?>" class="btn btn-sm btn-primary">
-                                    📄 Detail
+                                    Detail
                                 </a>
                             </td>
                         </tr>

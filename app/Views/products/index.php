@@ -55,7 +55,7 @@
     <div class="card-body">
         <div class="row align-items-center g-3">
             <div class="col-md-3">
-                <h5 class="fw-bold mb-0">📦 Daftar Stok Barang</h5>
+                <h5 class="fw-bold mb-0">Daftar Stok Barang</h5>
             </div>
             <div class="col-md-9">
                 <form action="/products" method="get" id="searchForm">
@@ -100,13 +100,13 @@
 <!-- FLASH MESSAGES -->
 <?php if (session()->getFlashdata('message')) : ?>
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-        ✅ <?= session()->getFlashdata('message'); ?>
+        <?= session()->getFlashdata('message'); ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
 <?php if (session()->getFlashdata('error')) : ?>
     <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        ❌ <?= session()->getFlashdata('error'); ?>
+        <?= session()->getFlashdata('error'); ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
@@ -204,10 +204,10 @@ function sortIcon($column, $currentSort, $currentOrder) {
                             <?php if (session()->get('role') == 'admin') : ?>
                             <td class="text-center pe-3">
                                 <div class="btn-group btn-group-sm">
-                                    <a href="/products/edit/<?= $p['id']; ?>" class="btn btn-outline-warning">✏️ Edit</a>
+                                    <a href="/products/edit/<?= $p['id']; ?>" class="btn btn-outline-warning">Edit</a>
                                     <form action="/products/delete/<?= $p['id']; ?>" method="post" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?')">
                                         <?= csrf_field() ?>
-                                        <button type="submit" class="btn btn-outline-danger">🗑️ Hapus</button>
+                                        <button type="submit" class="btn btn-outline-danger">Hapus</button>
                                     </form>
                                 </div>
                             </td>

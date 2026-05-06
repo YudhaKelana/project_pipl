@@ -57,7 +57,7 @@
                 <p class="small text-muted">Terima kasih telah berbelanja di Warung Z&Z!</p>
                 
                 <button onclick="window.print()" class="btn btn-outline-primary d-print-none">
-                    🖨️ Cetak Struk
+                    Cetak Struk
                 </button>
             </div>
         </div>

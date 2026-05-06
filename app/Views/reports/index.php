@@ -42,10 +42,10 @@
 <!-- FILTER & INFO -->
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
-        <h5 class="fw-bold mb-3">📊 Laporan Analisis Barang Fast/Slow Moving</h5>
+        <h5 class="fw-bold mb-3">Laporan Analisis Barang Fast/Slow Moving</h5>
         
         <div class="alert alert-light border mb-3">
-            <strong>📌 Keterangan:</strong><br>
+            <strong>Keterangan:</strong><br>
             <span class="badge bg-success">Fast-Moving</span> : Barang sangat laku (Terjual <strong>> 5 pcs</strong>)<br>
             <span class="badge bg-warning text-dark">Slow-Moving</span> : Barang kurang laku (Terjual <strong>≤ 5 pcs</strong>)
         </div>
@@ -162,11 +162,11 @@ function sortIcon($column, $currentSort, $currentOrder) {
                             <td class="text-center pe-3">
                                 <?php if($row['total_sold'] > 5): ?>
                                     <span class="badge bg-success fs-6 px-3 py-2">
-                                        ⚡ FAST MOVING
+                                        FAST MOVING
                                     </span>
                                 <?php else: ?>
                                     <span class="badge bg-warning text-dark fs-6 px-3 py-2">
-                                        🐌 SLOW MOVING
+                                        SLOW MOVING
                                     </span>
                                 <?php endif; ?>
                             </td>
