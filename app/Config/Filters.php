@@ -2,7 +2,6 @@
 
 namespace Config;
 
-use CodeIgniter\CodeIgniter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -21,37 +20,24 @@ class Filters extends BaseFilters
      * make reading things nicer and simpler.
      *
      * @var array<string, class-string|list<class-string>>
-     *
-     * [filter_name => classname]
-     * or [filter_name => [classname1, classname2, ...]]
      */
     public array $aliases = [
-        'csrf'          => \CodeIgniter\Filters\CSRF::class,
-        'toolbar'       => \CodeIgniter\Filters\DebugToolbar::class,
-        'honeypot'      => \CodeIgniter\Filters\Honeypot::class,
-        'auth'          => \App\Filters\AuthFilter::class,  // ✅ Alias 'auth' untuk AuthFilter
-        'authguard'     => \App\Filters\AuthFilter::class,  // Backward compatibility
+        'csrf'          => CSRF::class,
+        'toolbar'       => DebugToolbar::class,
+        'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'cors'          => Cors::class,
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'throttle'      => \CodeIgniter\Filters\Throttle::class, // ✅ Rate limiting
+        
+        // ✅ Custom Filters
+        'auth'          => \App\Filters\AuthFilter::class,
     ];
 
     /**
      * List of special required filters.
-     *
-     * The filters listed here are special. They are applied before and after
-     * other kinds of filters, and always applied even if a route does not exist.
-     *
-     * Filters set by default provide framework functionality. If removed,
-     * those functions will no longer work.
-     *
-     * @see https://codeigniter.com/user_guide/incoming/filters.html#provided-filters
-     *
-     * @var array{before: list<string>, after: list<string>}
      */
     public array $required = [
         'before' => [
@@ -68,16 +54,11 @@ class Filters extends BaseFilters
     /**
      * List of filter aliases that are always
      * applied before and after every request.
-     *
-     * @var array{
-     *     before: array<string, array{except: list<string>|string}>|list<string>,
-     *     after: array<string, array{except: list<string>|string}>|list<string>
-     * }
      */
     public array $globals = [
         'before' => [
             // 'honeypot',
-            'csrf', // ✅ AKTIFKAN CSRF PROTECTION
+            'csrf',  // ✅ CSRF Protection aktif
             // 'invalidchars',
         ],
         'after' => [
@@ -89,31 +70,12 @@ class Filters extends BaseFilters
     /**
      * List of filter aliases that works on a
      * particular HTTP method (GET, POST, etc.).
-     *
-     * Example:
-     * 'POST' => ['foo', 'bar']
-     *
-     * If you use this, you should disable auto-routing because auto-routing
-     * permits any HTTP method to access a controller. Accessing the controller
-     * with a method you don't expect could bypass the filter.
-     *
-     * @var array<string, list<string>>
      */
-    public array $methods = [
-        'POST' => ['throttle'], // ✅ Rate limiting untuk POST requests
-    ];
+    public array $methods = [];
 
     /**
      * List of filter aliases that should run on any
      * before or after URI patterns.
-     *
-     * Example:
-     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
-     *
-     * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [
-        // ✅ Filter auth sudah diterapkan via route group di Routes.php
-        // Tidak perlu didefinisikan di sini lagi
-    ];
+    public array $filters = [];
 }

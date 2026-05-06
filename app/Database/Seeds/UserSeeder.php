@@ -25,18 +25,7 @@ class UserSeeder extends Seeder
             ]
         ];
 
-        // ✅ Cek apakah user sudah ada, jika belum baru insert
-        foreach ($data as $user) {
-            $exists = $this->db->table('users')
-                ->where('username', $user['username'])
-                ->countAllResults();
-            
-            if ($exists == 0) {
-                $this->db->table('users')->insert($user);
-                echo "✅ User '{$user['username']}' berhasil dibuat\n";
-            } else {
-                echo "⚠️  User '{$user['username']}' sudah ada, skip...\n";
-            }
-        }
+        // Masukkan data ke tabel users
+        $this->db->table('users')->insertBatch($data);
     }
 }
