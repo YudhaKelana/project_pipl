@@ -34,7 +34,7 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
         $routes->post('store', 'Products::store');               // Proses Simpan
         $routes->get('edit/(:num)', 'Products::edit/$1');        // Form Edit
         $routes->post('update/(:num)', 'Products::update/$1');   // Proses Update
-        $routes->get('delete/(:num)', 'Products::delete/$1');    // Proses Hapus
+        $routes->post('delete/(:num)', 'Products::delete/$1');    // Proses Hapus
     });
     
     // ========================================

@@ -14,13 +14,72 @@ class Products extends BaseController
         $this->productModel = new ProductModel();
     }
 
-    // 1. Menampilkan Daftar Barang
+    // 1. Menampilkan Daftar Barang (dengan Search, Filter Kategori, Sort, & Pagination)
     public function index()
     {
+        // Ambil parameter dari URL
+        $search   = $this->request->getGet('q') ?? '';
+        $category = $this->request->getGet('category') ?? '';
+        $sort     = $this->request->getGet('sort') ?? 'id';
+        $order    = $this->request->getGet('order') ?? 'desc';
+        $perPage  = 10;
+
+        // Validasi kolom sort yang diizinkan
+        $allowedSort = ['id', 'name', 'category', 'price', 'stock'];
+        if (!in_array($sort, $allowedSort)) $sort = 'id';
+        if (!in_array($order, ['asc', 'desc'])) $order = 'desc';
+
+        // Build query dengan filter
+        $builder = $this->productModel->orderBy($sort, $order);
+
+        if (!empty($search)) {
+            $builder->like('name', $search);
+        }
+        if (!empty($category)) {
+            $builder->where('category', $category);
+        }
+
+        // Jalankan paginate SEBELUM query lain
+        $products = $builder->paginate($perPage);
+        $pager    = $this->productModel->pager;
+
+        // Ambil semua kategori unik (pakai $db terpisah)
+        $db = \Config\Database::connect();
+        $allCategories = $db->table('products')
+            ->select('category')->distinct()
+            ->where('deleted_at IS NULL')
+            ->orderBy('category', 'ASC')
+            ->get()->getResultArray();
+
+        // Hitung ringkasan stok
+        $summary = $db->table('products')
+            ->select('COUNT(*) as total_products, SUM(stock) as total_stock')
+            ->where('deleted_at IS NULL')
+            ->get()->getRowArray();
+
+        $lowStock = $db->table('products')
+            ->where('stock <', 10)->where('stock >', 0)
+            ->where('deleted_at IS NULL')
+            ->countAllResults();
+
+        $outOfStock = $db->table('products')
+            ->where('stock', 0)->where('deleted_at IS NULL')
+            ->countAllResults();
+
         $data = [
-            'title' => 'Daftar Produk Warung Z&Z',
-            // Mengambil semua data dari tabel products, urutkan dari yang terbaru
-            'products' => $this->productModel->orderBy('id', 'DESC')->findAll()
+            'title'         => 'Daftar Produk Warung Z&Z',
+            'products'      => $products,
+            'pager'         => $pager,
+            'search'        => $search,
+            'category'      => $category,
+            'sort'          => $sort,
+            'order'         => $order,
+            'categories'    => array_column($allCategories, 'category'),
+            'totalProducts' => $summary['total_products'] ?? 0,
+            'totalStock'    => $summary['total_stock'] ?? 0,
+            'lowStock'      => $lowStock,
+            'outOfStock'    => $outOfStock,
+            'perPage'       => $perPage,
         ];
 
         return view('products/index', $data);

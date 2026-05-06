@@ -19,14 +19,52 @@ class Pos extends BaseController
         $this->transactionDetailModel = new TransactionDetailModel();
     }
 
-    // 1. Halaman Utama Kasir
+    // 1. Halaman Utama Kasir (dengan Search & Filter)
     public function index()
     {
+        // Ambil parameter filter
+        $search   = $this->request->getGet('q') ?? '';
+        $category = $this->request->getGet('category') ?? '';
+        $sort     = $this->request->getGet('sort') ?? 'name';
+        $order    = $this->request->getGet('order') ?? 'asc';
+
+        // Validasi sort
+        $allowedSort = ['name', 'price', 'stock', 'category'];
+        if (!in_array($sort, $allowedSort)) $sort = 'name';
+        if (!in_array($order, ['asc', 'desc'])) $order = 'asc';
+
+        // Build query
+        $builder = $this->productModel->where('stock >', 0)->orderBy($sort, $order);
+
+        if (!empty($search)) {
+            $builder->like('name', $search);
+        }
+        if (!empty($category)) {
+            $builder->where('category', $category);
+        }
+
+        $products = $builder->findAll();
+
+        // Ambil kategori unik
+        $db = \Config\Database::connect();
+        $allCategories = $db->table('products')
+            ->select('category')->distinct()
+            ->where('stock >', 0)
+            ->where('deleted_at IS NULL')
+            ->orderBy('category', 'ASC')
+            ->get()->getResultArray();
+
         $data = [
-            'title'    => 'Kasir Warung Z&Z',
-            'products' => $this->productModel->where('stock >', 0)->findAll(), // Hanya tampilkan yang ada stok
-            'cart'     => session()->get('cart') ?? [] // Ambil data keranjang dari session
+            'title'      => 'Kasir Warung Z&Z',
+            'products'   => $products,
+            'cart'       => session()->get('cart') ?? [],
+            'search'     => $search,
+            'category'   => $category,
+            'sort'       => $sort,
+            'order'      => $order,
+            'categories' => array_column($allCategories, 'category'),
         ];
+        
         return view('pos/index', $data);
     }
 
@@ -135,6 +173,7 @@ class Pos extends BaseController
             return redirect()->to('/pos')->with('success', "Transaksi Berhasil! Invoice: $invoiceNo");
 
         } catch (\Exception $e) {
+            $db->transRollback();
             // Tangkap error jika ada (misal stok habis tadi)
             return redirect()->to('/pos')->with('error', 'Gagal: ' . $e->getMessage());
         }
